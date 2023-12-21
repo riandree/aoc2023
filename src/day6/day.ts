@@ -2,6 +2,10 @@ import DayProvider  from '../dayProvider';
 import zip from 'lodash/zip';
 import { puzzleInput } from './input';
 
+/**
+ * https://adventofcode.com/2023/day/6
+ */
+
 type Time = number;
 type Distance = number;
 type ToyBoatRace = [Time,Distance]; 
