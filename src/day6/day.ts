@@ -29,8 +29,8 @@ function computeNumberOfWinningOptions(timeOfRace : number, competitorDistance :
     return upperWinningMillies-lowerWinningMillies+1;
 }
 
-function exec1() : string {
-    const toyBoatRaces=parsePuzzle(puzzleInput);
+function solve(input : string) {
+    const toyBoatRaces=parsePuzzle(input);
     const result=toyBoatRaces
                     .map(race => computeNumberOfWinningOptions(...race))
                     .reduce((acc,n) => acc*n,1);
@@ -38,8 +38,12 @@ function exec1() : string {
     return `${result}`;
 }
 
+function exec1() : string {
+    return `${solve(puzzleInput)}`;
+}
+
 function exec2() : string {
-    return "ToDo";
+    return `${solve(puzzleInput.replaceAll(' ',''))}`;
 }
 
 const day6 : DayProvider = {
