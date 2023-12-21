@@ -1,10 +1,4 @@
-import DayProvider  from '../dayProvider';
-
-/**
- * https://adventofcode.com/2023/day/2
- */
-
-const puzzleInput=`Game 1: 5 red, 1 green, 2 blue; 2 green, 8 blue, 6 red; 8 red, 3 blue, 2 green; 6 red, 1 green, 19 blue; 1 red, 17 blue
+export const puzzleInput=`Game 1: 5 red, 1 green, 2 blue; 2 green, 8 blue, 6 red; 8 red, 3 blue, 2 green; 6 red, 1 green, 19 blue; 1 red, 17 blue
 Game 2: 4 red, 5 green, 2 blue; 7 red, 14 green, 3 blue; 2 green, 5 blue, 11 red; 10 blue, 3 green; 9 green, 6 blue, 13 red; 7 red, 5 green, 9 blue
 Game 3: 9 green, 18 blue, 1 red; 6 red, 10 blue, 5 green; 4 blue, 4 red, 15 green
 Game 4: 1 red, 13 green; 10 green, 2 red; 3 red, 4 green, 2 blue
@@ -104,68 +98,3 @@ Game 97: 6 green, 8 blue; 1 blue, 1 green; 3 green, 4 blue; 8 blue, 5 green, 2 r
 Game 98: 18 blue, 6 green; 11 green, 3 blue, 7 red; 18 blue, 3 red, 7 green; 5 red, 5 green; 8 blue, 2 green, 11 red
 Game 99: 3 red, 2 green, 3 blue; 1 red, 4 green, 1 blue; 2 green, 18 red; 15 red, 1 blue; 2 blue, 9 red, 2 green; 17 red, 3 blue, 4 green
 Game 100: 9 blue, 8 red, 16 green; 3 red, 7 green, 8 blue; 1 green, 3 red, 12 blue; 3 green, 14 blue`;
-
-const GameRegex = /Game\s+(\d+):(.*)/;
-
-type GameT = {
-    id : number,
-    red : number,
-    green : number,
-    blue : number
-}
-
-function parseGame(gameDesc : string) : GameT {
-    let [_,idStr,gameElements]=GameRegex.exec(gameDesc)!;
-
-    const initial : GameT = {
-        id : parseInt(idStr),
-        red : 0,
-        green: 0,
-        blue : 0
-    };
-
-    return gameElements.split(";")
-        .flatMap(turn => turn.split(","))
-        .map(single => {
-            const countOfColor=single.trim().split(/\s+/);
-            return [parseInt(countOfColor[0]),countOfColor[1]] as [number,string];
-        })
-        .reduce((acc,current) => {
-            switch (current[1]) {
-                case "red" :
-                    return { ...acc, red : Math.max(acc.red,current[0]) };
-                case "green" :
-                    return { ...acc, green : Math.max(acc.green,current[0]) };
-                case "blue" :
-                    return { ...acc, blue : Math.max(acc.blue,current[0]) };
-            }
-            throw new Error(`can't process : ${current}`);
-        } ,initial);
-}
-
-function isGamePossible(game : GameT) : boolean {
-    // possible if the bag contained a maximum of only 12 red cubes, 13 green cubes, and 14 blue cubes ?
-    return game.red <= 12 && game.green <= 13 && game.blue <= 14;
-}
-
-function exec1() : string {
-    return puzzleInput.split("\n")
-        .map(line => parseGame(line))
-        .filter( game => isGamePossible(game))
-        .reduce((acc,current) => acc+current.id,0).toString();
-}
-
-function exec2() : string {
-    return puzzleInput.split("\n")
-        .map(line => parseGame(line))
-        .map(game => game.red * game.green * game.blue)
-        .reduce((acc,current) => acc+current,0).toString();
-}
-
-const day2 : DayProvider = {
-    day : 2,
-    run1 : exec1,
-    run2 : exec2
-}
-
-export default day2;

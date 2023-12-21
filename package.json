@@ -9,9 +9,11 @@
   "author": "André",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash": "^4.14.202",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@types/node": "^20.10.4"
+    "@types/node": "^20.10.4",
+    "lodash": "^4.17.21"
   }
 }

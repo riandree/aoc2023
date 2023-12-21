@@ -1,11 +1,4 @@
-import { fileURLToPath } from 'url';
-import DayProvider  from '../dayProvider';
-
-/**
- * https://adventofcode.com/2023/day/4
- */
-
-const puzzleInput=`
+export const puzzleInput=`
 Card   1:  9 39 27 89 87 29 54 19 43 45 |  9 80 29 20 54 58 78 77 39 35 76 79 19 87 45 89 23 31 94 34 67 43 56 50 27
 Card   2: 89 59 76  2 60 83 21 37 92 45 | 79  5 41 92 45 59 72 50 89 37 64 65 60 54 57 22 66 21 25 76  1 39 83  2 33
 Card   3: 40 25 13 65 86  5 35 87  9 30 | 87 76 30 93  5 45 16 40 48 89 78 59 18 12 71 85 66 21 80 28 50 60 49 72 27
@@ -210,45 +203,3 @@ Card 201: 16 72 24 22 23 44 67  3 27 85 | 54 78 25 59 87  6 98 81 49 77 83 33 82
 Card 202: 69 11 38 33 26 39 84 57 98 36 | 46 35 45 80 94 26 52 92 76 90 55 31 18 73 30 15  7 39  4 34 19 47 21 29 54
 Card 203: 62 87 19 82  3 28 64  9 93 80 | 50 11 71 78 36 25 66 40 43 51 81 48 44 27 75 73 14 26 99 49 69  6 55 33 67
 Card 204: 82 64 58 18 73 13  2 71 24 49 |  9 61 47 31  5 89 78 99 40 54 23 68 38 95 69 84 53 27 45 33 87 90 93 44 60`;
-
-function toSetOfNumbers(numbers : string) : Set<number> {
-    const res= new Set(numbers.split(" ")
-            .map(n => n.trim())
-            .filter(n =>  n.length > 0)
-            .map(n => parseInt(n)));
-    return res;
-}
-
-function intersect(a : Set<number>, b: Set<number>) : Set<number> {
-    return new Set([...a].filter(n => b.has(n)));
-}
-
-function exec1() : string {
-    const score=puzzleInput
-        .split('\n')
-        .map(l => l.trim())
-        .filter(l => l.length > 0)
-        .map(line => {
-            const allNumbers=line.split(':')[1];
-            const [winningNumbers,ownedNumbers]=allNumbers.split('|');
-            const winning=toSetOfNumbers(winningNumbers);
-            const owned=toSetOfNumbers(ownedNumbers)
-            const ownedWinning=intersect(winning,owned);
-            return ownedWinning.size === 0 ? 0 : Math.pow(2,ownedWinning.size-1);
-        })
-        .reduce((acc,current) => acc+current,0);
-
-    return score.toString();
-}
-
-function exec2() : string {
-    return "ToDo";
-}
-
-const day4 : DayProvider = {
-    day : 4,
-    run1 : exec1,
-    run2 : exec2
-}
-
-export default day4;
